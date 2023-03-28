@@ -52,10 +52,10 @@ All subfolders will be included, and the target bucket preserves the folder stru
 The following snippet creates and execute the `S3FolderUploader` tool:
 ```golang
   ...
-	session, err := s3filemanager.ConnectWithEnvVariables()
-	if err != nil {
-		log.Fatal(err)
-	}
+  session, err := s3filemanager.ConnectWithEnvVariables()
+  if err != nil {
+    log.Fatal(err)
+  }
 
   uploader := s3filemanager.NewS3FolderUploader(bucket, folder, logger)
   err = uploader.Run(session)
@@ -83,10 +83,10 @@ All subfolders will be included, and the target folder preserves the bucket stru
 The following snippet creates and execute the `S3BucketDownloader` tool:
 ```golang
   ...
-	session, err := s3filemanager.ConnectWithEnvVariables()
-	if err != nil {
-		log.Fatal(err)
-	}
+  session, err := s3filemanager.ConnectWithEnvVariables()
+  if err != nil {
+    log.Fatal(err)
+  }
 
   downloader := s3filemanager.NewS3BucketDownloader(bucket, folder, logger)
   err = downloader.Run(session)
