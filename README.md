@@ -62,13 +62,13 @@ The following snippet creates and execute the `S3FolderUploader` tool:
   ...
 ```
 
-> `S3FolderUploader` uses [s3manager.Uploader](https://pkg.go.dev/github.com/stripe/aws-go/service/s3/s3manager#Uploader) 
-> to upload the entire folder recursively, using the `UploadWithIterator` scanner pattern to iterate through the files to be uploaded.
-> 
+`S3FolderUploader` uses [s3manager.Uploader](https://pkg.go.dev/github.com/stripe/aws-go/service/s3/s3manager#Uploader) 
+to upload the entire folder recursively, using the `UploadWithIterator` scanner function to iterate through the files to be uploaded.
+
 > This implementation minimizes the memory footprint and the number of open files: files are read and closed just after the read is complete.
 > It defines a `lazyFileReader` implementation of the `io.Reader` interface to postpone the actual file reading until it's really needed.<br/>
 
-`S3FolderUploader` can be tested using the provided `main` function with the given settings:
+`S3FolderUploader` can be tested using the provided `main` function with the following options:
 ```bash
 go run main.go -b BUCKET_NAME -debug -f SOURCE_FOLDER -m upload
 ```
@@ -76,7 +76,7 @@ go run main.go -b BUCKET_NAME -debug -f SOURCE_FOLDER -m upload
 ## Download an entire bucket to a local folder
 [S3BucketDownloader](./s3filemanager/s3_bucket_downloader.go) is a Golang struct that implements the function to fully download a remote S3 bucket to a local folder.
 
-The destinatino folder is created, if it doesn't exist.
+The destination folder is created, if it doesn't exist.
 
 All subfolders will be included, and the target folder preserves the bucket structure.
 
@@ -93,14 +93,14 @@ The following snippet creates and execute the `S3BucketDownloader` tool:
   ...
 ```
 
-> `S3BucketDownloader` uses [s3manager.Downloader](https://pkg.go.dev/github.com/stripe/aws-go/service/s3/s3manager#Downloader) 
-> to download the entire bucket, using the `DownloadWithIterator` function to iterate through the files to be downloaded.
-> 
+`S3BucketDownloader` uses [s3manager.Downloader](https://pkg.go.dev/github.com/stripe/aws-go/service/s3/s3manager#Downloader) 
+to download the entire bucket, using the `DownloadWithIterator` function to iterate through the files to be downloaded.
+ 
 > This implementation minimizes the memory footprint and the number of open files: the downloaded content is bufferized
 > by the `bufferizedFileWriter` implementation of the `io.WriterAt` interface, and the file is created and closed just after the download
 > of the S3 object completes, by the `SaveFileAfterWrite` struct that extends `s3manager.BatchDownloadObject`.<br/>
 
-`S3BucketDownloader` can be tested using the provided `main` function with the given settings:
+`S3BucketDownloader` can be tested using the provided `main` function with the following options:
 ```bash
 go run main.go -b BUCKET_NAME -debug -f DESTINATION_FOLDER -m download
 ```
@@ -131,12 +131,13 @@ and look for the section starting with:
   ...
 ```
 
-To test the `s3-tools` functionality, initialize the S3 connection to the `NooBaa` instance:
+To test the `s3-tools` functionality, initialize the S3 connection to the `NooBaa` instance first:
 ```bash
 . ./noobaa-init.sh $TARGET_NS
 ```
 The above script initializes all the environment variables for you.
-**Note**: unless you manually specified a value in the field `spec.region`, the default S3 region for NooBaa instances is just `us-east-1`
+
+**Note**: unless you manually specified a value in the field `spec.region`, the default S3 region for NooBaa instances is `us-east-1`
 
 You can use the following commands to start playing with the S3 CLI (install [aws CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) first):
 ```bash
